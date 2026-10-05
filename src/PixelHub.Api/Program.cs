@@ -1,13 +1,35 @@
 using Microsoft.EntityFrameworkCore;
 using PixelHub.Api.Data;
 using PixelHub.Api.Models;
+using PixelHub.Api.Repositories;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<PixelHubContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
 
+// Le MongoClient est thread-safe et gère son propre pool de connexions :
+// on l'enregistre donc en singleton.
+builder.Services.AddSingleton<IMongoClient>(_ =>
+    new MongoClient(builder.Configuration.GetConnectionString("Mongo")));
+
+builder.Services.AddSingleton<IMongoDatabase>(sp =>
+    sp.GetRequiredService<IMongoClient>()
+      .GetDatabase(builder.Configuration["Mongo:Database"]));
+
+builder.Services.AddSingleton<IGameCatalog, MongoGameCatalog>();
+
 var app = builder.Build();
+
+app.MapGet("/games", async (IGameCatalog catalog) =>
+    await catalog.GetAllAsync());
+
+app.MapGet("/games/genre/{genre}", async (string genre, IGameCatalog catalog) =>
+    await catalog.GetByGenreAsync(genre));
+
+app.MapGet("/games/top/{count:int}", async (int count, IGameCatalog catalog) =>
+    await catalog.GetTopRatedAsync(count));
 
 // Crée la base et les tables au démarrage.
 // Suffisant en TP ; dans un vrai projet, on utilise les migrations EF Core.
