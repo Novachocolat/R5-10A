@@ -31,6 +31,9 @@ app.MapGet("/games/genre/{genre}", async (string genre, IGameCatalog catalog) =>
 app.MapGet("/games/top/{count:int}", async (int count, IGameCatalog catalog) =>
     await catalog.GetTopRatedAsync(count));
 
+app.MapGet("/games/stats", async (IGameCatalog catalog) =>
+    await catalog.GetStatsByGenreAsync());
+
 // Crée la base et les tables au démarrage.
 // Suffisant en TP ; dans un vrai projet, on utilise les migrations EF Core.
 using (var scope = app.Services.CreateScope())
