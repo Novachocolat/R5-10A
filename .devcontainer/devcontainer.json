@@ -1,0 +1,39 @@
+{
+  "name": "PixelHub (.NET 10)",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "compose.yaml"
+  ],
+  "service": "dev",
+  "workspaceFolder": "/workspaces/pixelHub",
+  "shutdownAction": "stopCompose",
+  "forwardPorts": [5199],
+  "portsAttributes": {
+    "5199": {
+      "label": "PixelHub API",
+      "onAutoForward": "notify"
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "username": "vscode",
+      "uid": "1000",
+      "gid": "1000",
+      "installZsh": true,
+      "configureZshAsDefaultShell": false,
+      "upgradePackages": false
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.csharp"
+      ],
+      "settings": {
+        "dotnet.defaultSolution": "pixelHub/PixelHub.sln"
+      }
+    }
+  },
+  "postCreateCommand": "dotnet restore pixelHub/PixelHub.sln"
+}

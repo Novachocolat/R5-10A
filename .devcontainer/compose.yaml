@@ -1,0 +1,17 @@
+services:
+  dev:
+    image: mcr.microsoft.com/dotnet/sdk:10.0
+    command: sleep infinity
+    init: true
+    working_dir: /workspaces/pixelHub
+    volumes:
+      - ..:/workspaces/pixelHub:cached
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
