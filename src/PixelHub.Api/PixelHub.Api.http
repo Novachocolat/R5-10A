@@ -31,3 +31,45 @@ Accept: application/json
 ### Séance 2 — agrégation : note moyenne par genre
 GET {{host}}/games/stats
 Accept: application/json
+
+### Séance 4 — Neo4j : amis de Krayz (Nova et Pixel)
+GET {{host}}/social/Krayz/friends
+Accept: application/json
+
+### Séance 4 — Neo4j : recommandations de Nova (profondeur 2)
+GET {{host}}/social/Nova/recommendations
+Accept: application/json
+
+### Séance 4 — Neo4j : recommandations de Nova (profondeur 3)
+GET {{host}}/social/Nova/recommendations?depth=3
+Accept: application/json
+
+### Séance 4 — Neo4j : suggestions d'amis
+GET {{host}}/social/Nova/friend-suggestions
+Accept: application/json
+
+### Séance 4 bis — boutique : Nova achète Terraria (1200 pièces)
+POST {{host}}/shop/Nova/buy/Terraria
+
+### Séance 4 bis — boutique : un titre avec espaces et apostrophe s'encode dans l'URL
+POST {{host}}/shop/Nova/buy/Baldur%27s%20Gate%203
+
+### Séance 4 bis — boutique : jeu gratuit (FPS à 0 pièce)
+POST {{host}}/shop/Nova/buy/Valorant
+
+### Séance 4 bis — boutique : jeu inconnu (404)
+POST {{host}}/shop/Nova/buy/Tetris
+
+### Séance 4 bis — meilleures ventes (Redis)
+GET {{host}}/shop/bestsellers
+Accept: application/json
+
+### Séance 4 bis — fiche joueur (4 moteurs dans une réponse)
+GET {{host}}/players/Nova/profile
+Accept: application/json
+
+### Mission 4 — Ombre achète Rocket League, Neo4j arrêté
+POST {{host}}/shop/Ombre/buy/Rocket%20League
+
+### Séance 4 bis — mission 4 : reconstruire Neo4j et Redis depuis PostgreSQL
+POST {{host}}/admin/resync
